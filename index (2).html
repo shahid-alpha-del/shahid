@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shahid.Sports — Premium Athletic Gear</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f3ee;
+    --accent: #ff3c1f;
+    --accent2: #ffd000;
+    --gray: #1a1a1a;
+    --mid: #2e2e2e;
+    --text-muted: #666;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(255,60,31,0.5);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.08s ease, width 0.2s, height 0.2s, opacity 0.2s;
+  }
+  body:has(a:hover) .cursor-ring,
+  body:has(button:hover) .cursor-ring { width: 60px; height: 60px; opacity: 0.6; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+    backdrop-filter: blur(2px);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--accent); }
+  .nav-cta {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: var(--white);
+    border: none;
+    padding: 10px 24px;
+    cursor: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .nav-cta:hover { background: #e02e10; transform: scale(1.04); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-text {
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(120px, 18vw, 260px);
+    color: rgba(255,255,255,0.025);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    letter-spacing: -4px;
+    pointer-events: none;
+    animation: bgTextDrift 20s ease-in-out infinite alternate;
+    user-select: none;
+  }
+  @keyframes bgTextDrift {
+    from { transform: translate(-52%, -50%) }
+    to   { transform: translate(-48%, -50%) }
+  }
+
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 140px 64px 80px;
+    position: relative; z-index: 2;
+  }
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.3s forwards;
+  }
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 8vw, 120px);
+    line-height: 0.92;
+    letter-spacing: 2px;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+  }
+  .hero-title .line-red { color: var(--accent); display: block; }
+  .hero-subtitle {
+    font-size: 16px;
+    color: rgba(245,243,238,0.55);
+    line-height: 1.7;
+    max-width: 380px;
+    margin-bottom: 44px;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.7s forwards;
+  }
+  .hero-btns {
+    display: flex; gap: 16px; align-items: center;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.9s forwards;
+  }
+  .btn-primary {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: var(--white);
+    border: none;
+    padding: 16px 36px;
+    cursor: none;
+    transition: transform 0.15s, background 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: #e02e10; transform: translateY(-2px); }
+  .btn-ghost {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 15px 36px;
+    cursor: none;
+    transition: border-color 0.2s, color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--white); }
+
+  .hero-stats {
+    display: flex; gap: 48px; margin-top: 72px;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.1s forwards;
+  }
+  .stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-top: 4px;
+  }
+
+  .hero-right {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .hero-right::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(255,60,31,0.12) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+
+  .hero-product {
+    font-size: 180px;
+    animation: floatProduct 6s ease-in-out infinite;
+    filter: drop-shadow(0 30px 60px rgba(255,60,31,0.3));
+    user-select: none;
+    position: relative; z-index: 2;
+  }
+  @keyframes floatProduct {
+    0%,100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-20px) rotate(2deg); }
+  }
+
+  .hero-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255,60,31,0.15);
+    animation: ringExpand 4s ease-in-out infinite;
+  }
+  .hero-ring:nth-child(1) { width: 300px; height: 300px; animation-delay: 0s; }
+  .hero-ring:nth-child(2) { width: 450px; height: 450px; animation-delay: 0.8s; }
+  .hero-ring:nth-child(3) { width: 600px; height: 600px; animation-delay: 1.6s; }
+  @keyframes ringExpand {
+    0%,100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.1; transform: scale(1.04); }
+  }
+
+  /* TICKER */
+  .ticker {
+    background: var(--accent);
+    padding: 14px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-track {
+    display: inline-flex;
+    animation: tickerScroll 20s linear infinite;
+  }
+  .ticker-item {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 3px;
+    margin-right: 60px;
+    color: var(--black);
+  }
+  .ticker-dot { opacity: 0.5; margin-right: 60px; }
+  @keyframes tickerScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SECTION COMMON */
+  section { padding: 120px 48px; }
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 80px);
+    line-height: 0.95;
+    letter-spacing: 1px;
+    margin-bottom: 60px;
+  }
+
+  /* PRODUCTS */
+  .products { background: var(--gray); }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px;
+  }
+  .product-card {
+    background: var(--black);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    transition: transform 0.3s ease;
+    group: true;
+  }
+  .product-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,60,31,0.06) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .product-card:hover::before { opacity: 1; }
+  .product-card:hover { transform: translateY(-4px); }
+  .product-card:hover .product-icon { transform: scale(1.1) rotate(5deg); }
+  .product-tag {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: var(--white);
+    padding: 4px 10px;
+    margin-bottom: 24px;
+  }
+  .product-icon {
+    font-size: 72px;
+    display: block;
+    margin-bottom: 20px;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    filter: drop-shadow(0 8px 20px rgba(255,60,31,0.2));
+  }
+  .product-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .product-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.6;
+    margin-bottom: 28px;
+    font-weight: 300;
+  }
+  .product-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .product-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--accent2);
+  }
+  .product-old-price {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: line-through;
+    margin-left: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+  }
+  .add-btn {
+    width: 44px; height: 44px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--white);
+    font-size: 22px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: none;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    line-height: 1;
+  }
+  .add-btn:hover { background: var(--accent); border-color: var(--accent); transform: rotate(90deg); }
+
+  /* FEATURED BANNER */
+  .featured {
+    background: var(--accent);
+    padding: 80px 48px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 40px;
+    overflow: hidden;
+    position: relative;
+  }
+  .featured::before {
+    content: 'SALE';
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 300px;
+    color: rgba(0,0,0,0.08);
+    position: absolute;
+    right: -20px; top: 50%;
+    transform: translateY(-50%);
+    letter-spacing: -10px;
+    pointer-events: none;
+    line-height: 1;
+  }
+  .featured-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(10,10,10,0.6);
+    margin-bottom: 12px;
+  }
+  .featured-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 7vw, 100px);
+    color: var(--black);
+    line-height: 0.9;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .featured-sub {
+    font-size: 16px;
+    color: rgba(10,10,10,0.65);
+    max-width: 440px;
+    line-height: 1.6;
+    font-weight: 300;
+    margin-bottom: 36px;
+  }
+  .btn-dark {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    padding: 16px 40px;
+    cursor: none;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-dark:hover { background: #1a1a1a; transform: translateY(-2px); }
+  .featured-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: var(--black);
+    background: var(--accent2);
+    width: 160px; height: 160px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    border-radius: 50%;
+    line-height: 1;
+    text-align: center;
+    animation: badgeSpin 8s linear infinite;
+    flex-shrink: 0;
+  }
+  .featured-badge small {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: -8px;
+    display: block;
+  }
+  @keyframes badgeSpin {
+    0%   { transform: rotate(0deg) scale(1); }
+    25%  { transform: rotate(8deg) scale(1.04); }
+    75%  { transform: rotate(-8deg) scale(0.97); }
+    100% { transform: rotate(0deg) scale(1); }
+  }
+
+  /* CATEGORIES */
+  .categories { background: var(--black); }
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  .cat-card {
+    background: var(--gray);
+    aspect-ratio: 3/4;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    transition: transform 0.3s;
+  }
+  .cat-card:hover { transform: scale(1.01); }
+  .cat-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, transparent 60%);
+    z-index: 1;
+  }
+  .cat-icon {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -60%);
+    font-size: 100px;
+    opacity: 0.15;
+    transition: opacity 0.3s, transform 0.4s;
+    z-index: 0;
+  }
+  .cat-card:hover .cat-icon { opacity: 0.25; transform: translate(-50%, -55%) scale(1.1); }
+  .cat-content { position: relative; z-index: 2; }
+  .cat-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .cat-count {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+  .cat-arrow {
+    position: absolute;
+    top: 28px; right: 28px;
+    width: 40px; height: 40px;
+    border: 1px solid rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    z-index: 2;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .cat-card:hover .cat-arrow { background: var(--accent); border-color: var(--accent); transform: rotate(-45deg); }
+
+  /* BRANDS */
+  .brands {
+    background: var(--gray);
+    padding: 72px 48px;
+  }
+  .brands-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .brands-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 64px;
+    flex-wrap: wrap;
+  }
+  .brand-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: rgba(255,255,255,0.18);
+    transition: color 0.25s;
+    cursor: none;
+  }
+  .brand-name:hover { color: rgba(255,255,255,0.7); }
+
+  /* TESTIMONIAL */
+  .testimonial {
+    background: var(--black);
+    text-align: center;
+    padding: 120px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .testimonial::before {
+    content: '"';
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 400px;
+    color: rgba(255,60,31,0.05);
+    position: absolute;
+    top: -60px; left: 50%;
+    transform: translateX(-50%);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .testimonial-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(24px, 3.5vw, 48px);
+    font-weight: 300;
+    line-height: 1.3;
+    max-width: 900px;
+    margin: 0 auto 40px;
+    color: rgba(245,243,238,0.85);
+    letter-spacing: 0.5px;
+    position: relative; z-index: 1;
+  }
+  .testimonial-author {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--gray);
+    padding: 80px 48px 40px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 4px;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .footer-logo span { color: var(--accent); }
+  .footer-tagline {
+    font-size: 14px;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.7;
+    max-width: 260px;
+    font-weight: 300;
+  }
+  .footer-col h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 20px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul a {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-col ul a:hover { color: var(--white); }
+  .footer-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-copy {
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 1px;
+  }
+  .footer-social { display: flex; gap: 16px; }
+  .social-btn {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    cursor: none;
+  }
+  .social-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* FADE UP ANIMATION */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* SCROLL PROGRESS */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: var(--accent);
+    z-index: 200;
+    transition: width 0.1s;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-right { min-height: 340px; }
+    .hero-left { padding: 120px 28px 60px; }
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    .cat-grid { grid-template-columns: 1fr 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .featured { grid-template-columns: 1fr; }
+    .featured-badge { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Scroll progress -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">SHAHID<span>.</span>SPORTS</a>
+  <ul class="nav-links">
+    <li><a href="#products">Shop</a></li>
+    <li><a href="#categories">Categories</a></li>
+    <li><a href="#featured">Deals</a></li>
+    <li><a href="#footer">About</a></li>
+  </ul>
+  <button class="nav-cta" onclick="openCart()">
+    🛒 Cart <span id="cartCount" style="background:var(--black);color:var(--accent);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;margin-left:6px;letter-spacing:0;">0</span>
+  </button>
+</nav>
+
+<!-- CART OVERLAY -->
+<div id="cartOverlay" onclick="closeCart()" style="position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;opacity:0;pointer-events:none;transition:opacity 0.3s;"></div>
+
+<!-- CART DRAWER -->
+<div id="cartDrawer" style="position:fixed;top:0;right:0;bottom:0;width:420px;max-width:100vw;background:#111;z-index:501;transform:translateX(100%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;font-family:'Barlow',sans-serif;">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:28px 28px 20px;border-bottom:1px solid rgba(255,255,255,0.08);">
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;">YOUR CART</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.35);letter-spacing:1px;margin-top:2px;" id="cartItemCount">0 items</div>
+    </div>
+    <button onclick="closeCart()" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);width:40px;height:40px;font-size:20px;cursor:none;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s,color 0.2s;">✕</button>
+  </div>
+  <div id="cartItems" style="flex:1;overflow-y:auto;padding:20px 28px;">
+    <div id="cartEmpty" style="text-align:center;padding:80px 0;">
+      <div style="font-size:60px;margin-bottom:16px;">🛒</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:rgba(255,255,255,0.3);">YOUR CART IS EMPTY</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.2);margin-top:8px;">Add some products to get started</div>
+    </div>
+    <div id="cartList"></div>
+  </div>
+  <div id="cartFooter" style="padding:20px 28px 32px;border-top:1px solid rgba(255,255,255,0.08);display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <span style="font-size:13px;color:rgba(255,255,255,0.4);letter-spacing:1px;text-transform:uppercase;">Subtotal</span>
+      <span id="cartSubtotal" style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent2);">$0</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <span style="font-size:13px;color:rgba(255,255,255,0.4);letter-spacing:1px;text-transform:uppercase;">Shipping</span>
+      <span id="cartShipping" style="font-size:13px;color:rgba(255,255,255,0.5);">Free over $100</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.08);">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:16px;letter-spacing:2px;text-transform:uppercase;">Total</span>
+      <span id="cartTotal" style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--white);">$0</span>
+    </div>
+    <button onclick="checkout()" style="width:100%;background:var(--accent);color:var(--white);border:none;font-family:'Barlow Condensed',sans-serif;font-size:15px;letter-spacing:3px;text-transform:uppercase;padding:18px;cursor:none;transition:background 0.2s;">Proceed to Checkout →</button>
+    <button onclick="clearCart()" style="width:100%;background:transparent;color:rgba(255,255,255,0.3);border:none;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:12px;cursor:none;margin-top:8px;transition:color 0.2s;">Clear Cart</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg-text">SHAHID</div>
+  <div class="hero-left">
+    <p class="hero-eyebrow">Shahid.Sports — New Season 2025 Collection</p>
+    <h1 class="hero-title">
+      Built for<br>
+      <span class="line-red">Champions</span>
+    </h1>
+    <p class="hero-subtitle">
+      Premium athletic gear engineered for those who refuse to settle. Push your limits with performance-first equipment.
+    </p>
+    <div class="hero-btns">
+      <a href="#products" class="btn-primary">Shop Collection</a>
+      <a href="#categories" class="btn-ghost">Browse All</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-val">500+</div>
+        <div class="stat-label">Products</div>
+      </div>
+      <div>
+        <div class="stat-val">12K</div>
+        <div class="stat-label">Athletes</div>
+      </div>
+      <div>
+        <div class="stat-val">98%</div>
+        <div class="stat-label">Satisfaction</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-ring"></div>
+    <div class="hero-ring"></div>
+    <div class="hero-ring"></div>
+    <div class="hero-product" id="heroEmoji">⚽</div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track" id="tickerTrack">
+    <span class="ticker-item">FREE SHIPPING OVER $100</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">NEW ARRIVALS WEEKLY</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">PREMIUM ATHLETIC GEAR</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">30-DAY RETURNS</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">CHAMPIONS CHOOSE APEX</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">FREE SHIPPING OVER $100</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">NEW ARRIVALS WEEKLY</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">PREMIUM ATHLETIC GEAR</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">30-DAY RETURNS</span><span class="ticker-dot">✦</span>
+    <span class="ticker-item">CHAMPIONS CHOOSE APEX</span><span class="ticker-dot">✦</span>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="reveal">
+    <p class="section-label">Featured Products</p>
+    <h2 class="section-title">Top Picks<br>This Season</h2>
+  </div>
+  <div class="products-grid">
+    <div class="product-card reveal">
+      <span class="product-tag">Bestseller</span>
+      <span class="product-icon">👟</span>
+      <h3 class="product-name">Elite Runner X9</h3>
+      <p class="product-desc">Carbon-plate racing shoe with adaptive foam for maximum energy return on every stride.</p>
+      <div class="product-bottom">
+        <div>
+          <span class="product-price">$189</span>
+          <span class="product-old-price">$240</span>
+        </div>
+        <button class="add-btn" onclick="addToCart(this,'Elite Runner X9','👟',189)">+</button>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <span class="product-tag">New</span>
+      <span class="product-icon">🏋️</span>
+      <h3 class="product-name">PowerLift Pro</h3>
+      <p class="product-desc">Olympic-spec barbell set with precision-machined collars and dual-knurl markings.</p>
+      <div class="product-bottom">
+        <div>
+          <span class="product-price">$349</span>
+          <span class="product-old-price">$420</span>
+        </div>
+        <button class="add-btn" onclick="addToCart(this,'PowerLift Pro','🏋️',349)">+</button>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <span class="product-tag">Sale</span>
+      <span class="product-icon">🎾</span>
+      <h3 class="product-name">Ace Strike Racket</h3>
+      <p class="product-desc">Graphite composite frame for explosive power. Used by touring professionals worldwide.</p>
+      <div class="product-bottom">
+        <div>
+          <span class="product-price">$129</span>
+          <span class="product-old-price">$195</span>
+        </div>
+        <button class="add-btn" onclick="addToCart(this,'Ace Strike Racket','🎾',129)">+</button>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <span class="product-tag">Hot</span>
+      <span class="product-icon">🏊</span>
+      <h3 class="product-name">HydroSlice Wetsuit</h3>
+      <p class="product-desc">4/3mm thermal neoprene with hydrodynamic panels for speed in open water.</p>
+      <div class="product-bottom">
+        <div>
+          <span class="product-price">$279</span>
+          <span class="product-old-price">$350</span>
+        </div>
+        <button class="add-btn" onclick="addToCart(this,'HydroSlice Wetsuit','🏊',279)">+</button>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <span class="product-tag">Limited</span>
+      <span class="product-icon">⚽</span>
+      <h3 class="product-name">Pro Match Ball</h3>
+      <p class="product-desc">FIFA-approved thermally bonded match ball with consistent flight in all conditions.</p>
+      <div class="product-bottom">
+        <div>
+          <span class="product-price">$89</span>
+          <span class="product-old-price">$120</span>
+        </div>
+        <button class="add-btn" onclick="addToCart(this,'Pro Match Ball','⚽',89)">+</button>
+      </div>
+    </div>
+    <div class="product-card reveal">
+      <span class="product-tag">Popular</span>
+      <span class="product-icon">🚴</span>
+      <h3 class="product-name">TrailBlazer Bike</h3>
+      <p class="product-desc">Carbon mountain bike frame with 29" wheels and 12-speed SRAM drivetrain.</p>
+      <div class="product-bottom">
+        <div>
+          <span class="product-price">$1,299</span>
+          <span class="product-old-price">$1,600</span>
+        </div>
+        <button class="add-btn" onclick="addToCart(this,'TrailBlazer Bike','🚴',1299)">+</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED BANNER -->
+<div class="featured reveal" id="featured">
+  <div>
+    <p class="featured-label">Limited Time Offer</p>
+    <h2 class="featured-title">UP TO<br>40% OFF</h2>
+    <p class="featured-sub">Season-end clearance on premium gear. Stock is limited — don't miss your chance to upgrade your game.</p>
+    <a href="#products" class="btn-dark">Grab the Deal</a>
+  </div>
+  <div class="featured-badge">
+    <small>Up to</small>40%<small>off</small>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="categories" id="categories">
+  <div class="reveal">
+    <p class="section-label">Browse by Sport</p>
+    <h2 class="section-title">Find Your<br>Game</h2>
+  </div>
+  <div class="cat-grid reveal">
+    <div class="cat-card">
+      <a href="#" class="cat-arrow">→</a>
+      <span class="cat-icon">🏃</span>
+      <div class="cat-content">
+        <h3 class="cat-name">Running</h3>
+        <p class="cat-count">84 products</p>
+      </div>
+    </div>
+    <div class="cat-card">
+      <a href="#" class="cat-arrow">→</a>
+      <span class="cat-icon">💪</span>
+      <div class="cat-content">
+        <h3 class="cat-name">Strength</h3>
+        <p class="cat-count">62 products</p>
+      </div>
+    </div>
+    <div class="cat-card">
+      <a href="#" class="cat-arrow">→</a>
+      <span class="cat-icon">⚽</span>
+      <div class="cat-content">
+        <h3 class="cat-name">Football</h3>
+        <p class="cat-count">48 products</p>
+      </div>
+    </div>
+    <div class="cat-card">
+      <a href="#" class="cat-arrow">→</a>
+      <span class="cat-icon">🏄</span>
+      <div class="cat-content">
+        <h3 class="cat-name">Water Sports</h3>
+        <p class="cat-count">37 products</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<div class="brands reveal">
+  <p class="brands-label">Trusted Brands We Carry</p>
+  <div class="brands-row">
+    <span class="brand-name">NIKE</span>
+    <span class="brand-name">ADIDAS</span>
+    <span class="brand-name">PUMA</span>
+    <span class="brand-name">UNDER ARMOUR</span>
+    <span class="brand-name">NEW BALANCE</span>
+    <span class="brand-name">ASICS</span>
+  </div>
+</div>
+
+<!-- TESTIMONIAL -->
+<div class="testimonial reveal">
+  <p class="testimonial-text" id="testimonialText">
+    "APEX Sport gave me the edge I needed. The gear is exceptional — it genuinely performs when it counts."
+  </p>
+  <p class="testimonial-author" id="testimonialAuthor">— Zara K., Marathon Runner</p>
+</div>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-top">
+    <div>
+      <span class="footer-logo">SHAHID<span>.</span>SPORTS</span>
+      <p class="footer-tagline">Premium athletic gear for those who refuse to settle for average performance.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="#">New Arrivals</a></li>
+        <li><a href="#">Best Sellers</a></li>
+        <li><a href="#">Sale Items</a></li>
+        <li><a href="#">All Products</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Size Guide</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Shipping Info</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About APEX</a></li>
+        <li><a href="#">Athletes</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 Shahid.Sports. All rights reserved.</p>
+    <div class="footer-social">
+      <a href="#" class="social-btn">ig</a>
+      <a href="#" class="social-btn">tw</a>
+      <a href="#" class="social-btn">fb</a>
+      <a href="#" class="social-btn">yt</a>
+    </div>
+  </div>
+</footer>
+
+<!-- CART TOAST -->
+<div id="toast" style="position:fixed;bottom:32px;right:32px;background:var(--accent);color:var(--white);padding:14px 24px;font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:1.5px;text-transform:uppercase;transform:translateY(80px);opacity:0;transition:transform 0.3s ease,opacity 0.3s ease;z-index:300;"></div>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.transform = `translate(${mx-6}px,${my-6}px)`;
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.transform = `translate(${rx-18}px,${ry-18}px)`;
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+
+  // Scroll progress
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+    document.getElementById('progressBar').style.width = (scrolled * 100) + '%';
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Hero emoji rotator
+  const sports = ['⚽','🏀','🎾','🏈','⚾','🏐','🏉','🎱','🏓','🥊'];
+  let si = 0;
+  setInterval(() => {
+    si = (si + 1) % sports.length;
+    const el = document.getElementById('heroEmoji');
+    el.style.transform = 'scale(0) rotate(180deg)';
+    setTimeout(() => {
+      el.textContent = sports[si];
+      el.style.transform = '';
+      el.style.transition = 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1)';
+    }, 300);
+  }, 2500);
+
+  // Testimonials rotator
+  const testimonials = [
+    { text: '"APEX Sport gave me the edge I needed. The gear is exceptional — it genuinely performs when it counts."', author: '— Zara K., Marathon Runner' },
+    { text: '"Finally a sports store that understands performance. Every product delivers on its promise."', author: '— Marcus T., Strength Coach' },
+    { text: '"The quality blew me away. My TrailBlazer bike has been flawless through 2,000 km of trails."', author: '— Aisha R., Mountain Biker' },
+  ];
+  let ti = 0;
+  setInterval(() => {
+    ti = (ti + 1) % testimonials.length;
+    const tt = document.getElementById('testimonialText');
+    const ta = document.getElementById('testimonialAuthor');
+    tt.style.opacity = 0; ta.style.opacity = 0;
+    setTimeout(() => {
+      tt.textContent = testimonials[ti].text;
+      ta.textContent = testimonials[ti].author;
+      tt.style.transition = ta.style.transition = 'opacity 0.6s';
+      tt.style.opacity = 1; ta.style.opacity = 1;
+    }, 500);
+  }, 4000);
+
+  // ========== FULL CART SYSTEM ==========
+  let cart = JSON.parse(localStorage.getItem('shahidsports_cart') || '[]');
+
+  function saveCart() {
+    localStorage.setItem('shahidsports_cart', JSON.stringify(cart));
+  }
+
+  function openCart() {
+    document.getElementById('cartDrawer').style.transform = 'translateX(0)';
+    document.getElementById('cartOverlay').style.opacity = '1';
+    document.getElementById('cartOverlay').style.pointerEvents = 'auto';
+    renderCart();
+  }
+
+  function closeCart() {
+    document.getElementById('cartDrawer').style.transform = 'translateX(100%)';
+    document.getElementById('cartOverlay').style.opacity = '0';
+    document.getElementById('cartOverlay').style.pointerEvents = 'none';
+  }
+
+  function addToCart(btn, name, emoji, price) {
+    const existing = cart.find(i => i.name === name);
+    if (existing) {
+      existing.qty += 1;
+    } else {
+      cart.push({ name, emoji, price, qty: 1 });
+    }
+    saveCart();
+    updateCartCount();
+
+    // Button animation
+    btn.textContent = '✓';
+    btn.style.background = 'var(--accent)';
+    btn.style.borderColor = 'var(--accent)';
+    setTimeout(() => {
+      btn.textContent = '+';
+      btn.style.background = '';
+      btn.style.borderColor = '';
+    }, 1500);
+
+    // Toast
+    const toast = document.getElementById('toast');
+    toast.textContent = `${emoji} ${name} added!`;
+    toast.style.transform = 'translateY(0)';
+    toast.style.opacity = '1';
+    setTimeout(() => {
+      toast.style.transform = 'translateY(80px)';
+      toast.style.opacity = '0';
+    }, 2000);
+
+    // Open cart drawer after short delay
+    setTimeout(openCart, 400);
+  }
+
+  function changeQty(name, delta) {
+    const item = cart.find(i => i.name === name);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) cart = cart.filter(i => i.name !== name);
+    saveCart();
+    updateCartCount();
+    renderCart();
+  }
+
+  function removeItem(name) {
+    cart = cart.filter(i => i.name !== name);
+    saveCart();
+    updateCartCount();
+    renderCart();
+  }
+
+  function clearCart() {
+    cart = [];
+    saveCart();
+    updateCartCount();
+    renderCart();
+  }
+
+  function updateCartCount() {
+    const total = cart.reduce((s, i) => s + i.qty, 0);
+    document.getElementById('cartCount').textContent = total;
+    document.getElementById('cartItemCount').textContent = total + (total === 1 ? ' item' : ' items');
+  }
+
+  function renderCart() {
+    const list = document.getElementById('cartList');
+    const empty = document.getElementById('cartEmpty');
+    const footer = document.getElementById('cartFooter');
+
+    if (cart.length === 0) {
+      empty.style.display = 'block';
+      list.innerHTML = '';
+      footer.style.display = 'none';
+      return;
+    }
+
+    empty.style.display = 'none';
+    footer.style.display = 'block';
+
+    list.innerHTML = cart.map(item => `
+      <div style="display:flex;align-items:center;gap:16px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,0.07);">
+        <div style="font-size:42px;flex-shrink:0;">${item.emoji}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:600;letter-spacing:1px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.name}</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent2);">$${(item.price * item.qty).toLocaleString()}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0;flex-shrink:0;">
+          <button onclick="changeQty('${item.name}',-1)" style="width:32px;height:32px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:var(--white);font-size:18px;cursor:none;transition:background 0.2s;">−</button>
+          <span style="width:36px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:600;">${item.qty}</span>
+          <button onclick="changeQty('${item.name}',1)" style="width:32px;height:32px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:var(--white);font-size:18px;cursor:none;transition:background 0.2s;">+</button>
+        </div>
+        <button onclick="removeItem('${item.name}')" style="background:transparent;border:none;color:rgba(255,255,255,0.25);font-size:18px;cursor:none;padding:4px;transition:color 0.2s;flex-shrink:0;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='rgba(255,255,255,0.25)'">✕</button>
+      </div>
+    `).join('');
+
+    const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const shipping = subtotal >= 100 ? 0 : 9.99;
+    const total = subtotal + shipping;
+
+    document.getElementById('cartSubtotal').textContent = '$' + subtotal.toLocaleString();
+    document.getElementById('cartShipping').textContent = shipping === 0 ? '✓ FREE' : '$' + shipping.toFixed(2);
+    document.getElementById('cartTotal').textContent = '$' + total.toLocaleString();
+  }
+
+  function checkout() {
+    if (cart.length === 0) return;
+    alert('✅ Order placed! Total: $' + cart.reduce((s,i) => s + i.price*i.qty, 0).toLocaleString() + '\n\nTo accept real payments, connect Stripe next!');
+  }
+
+  // Init cart count on page load
+  updateCartCount();
+
+  // Parallax on hero emoji
+  window.addEventListener('mousemove', e => {
+    const el = document.getElementById('heroEmoji');
+    const cx = window.innerWidth/2, cy = window.innerHeight/2;
+    const dx = (e.clientX - cx) / cx * 10;
+    const dy = (e.clientY - cy) / cy * 10;
+    el.style.filter = `drop-shadow(${dx}px ${30+dy}px 60px rgba(255,60,31,0.3))`;
+  });
+</script>
+</body>
+</html>
